@@ -17,7 +17,7 @@ function App() {
 
   async function getData(limit: number, page: number) {
     try {
-      const resp = await fetch(`http://localhost:3000/machines?limit=${limit}&page=${currentPage}`);
+      const resp = await fetch(`http://localhost:3000/machines?limit=${limit}&page=${page}`);
       const data: CarType[] = await resp.json();
       setCars(data.results)
     } catch (error) {
