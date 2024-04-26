@@ -12,26 +12,25 @@ interface CarType {
 
 function App() {
   const [cars, setCars] = useState<CarType[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>([]);
+  const [limit, setLimit] = useState<number>(8)
+
+  async function getData(limit: number, page: number) {
+    try {
+      const resp = await fetch(`http://localhost:3000/machines?limit=${limit}&page=${currentPage}`);
+      const data: CarType[] = await resp.json();
+      setCars(data.results)
+    } catch (error) {
+      console.log(error);   
+    }
+  }
 
   useEffect(() =>{
-    fetch("http://localhost:3000/all")
-    .then(res => res.json())
-    .then((data: CarType[]) => {
-      setCars(data);
-    })
-    .catch((err: Error) => {
-      console.log(err);
-      
-    })
+   getData(limit, currentPage)
   }, [])
-  
-
 
   function handleChange(e: React.ChangeEvent<unknown>, count: number) {
-    console.log(count);
-    console.log(e);
-    
-    
+    getData(limit, count); 
   }
 
   return (
